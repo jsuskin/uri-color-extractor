@@ -18,9 +18,9 @@ app.use(cors(corsOptions));
 // Multer setup for handling file uploads
 const upload = multer({ dest: "uploads/" });
 
-// app.get("/test", () => {
-//   res.json("hello from the server")
-// })
+app.get("/test", () => {
+  res.json("hello from the server")
+})
 
 app.post("/extractColors", upload.single("image"), async (req, res) => {
   try {
