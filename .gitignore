@@ -16,4 +16,4 @@ ios/
 *.aab
 *.keystore
 *.jsbundle
-*.json
+package-lock.json
