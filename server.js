@@ -7,25 +7,26 @@ const app = express();
 
 const corsOptions = {
   origin: "*",
-  // origin: "exp://192.168.1.210:19000",
-  // methods: "GET,PUT,POST,DELETE",
   methods: "*",
-  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
 
-// Multer setup for handling file uploads
-const upload = multer({ dest: "uploads/" });
+// Multer setup for handling file uploads without saving to disk
+const upload = multer({ storage: multer.memoryStorage() });
 
-app.get("/test", () => {
-  res.json("hello from the server")
-})
+app.get("/test", (_, res) => {
+  res.json("hello from the server");
+});
 
 app.post("/extractColors", upload.single("image"), async (req, res) => {
   try {
-    const imagePath = req.file.path; // Path to the uploaded image
-    const colors = await extractColors(imagePath);
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    const buffer = req.file.buffer; // Access the file buffer directly
+    const colors = await extractColors(buffer); // Pass buffer to color extraction function
     res.json(colors);
   } catch (error) {
     console.error("Error processing image:", error);
