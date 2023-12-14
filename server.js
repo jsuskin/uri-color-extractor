@@ -6,8 +6,10 @@ const extractColors = require("./colorExtractor");
 const app = express();
 
 const corsOptions = {
-  origin: "exp://192.168.1.210:19000",
-  methods: "GET,PUT,POST,DELETE",
+  origin: "*",
+  // origin: "exp://192.168.1.210:19000",
+  // methods: "GET,PUT,POST,DELETE",
+  methods: "*",
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -16,9 +18,9 @@ app.use(cors(corsOptions));
 // Multer setup for handling file uploads
 const upload = multer({ dest: "uploads/" });
 
-app.get("/test", () => {
-  res.json("hello from the server")
-})
+// app.get("/test", () => {
+//   res.json("hello from the server")
+// })
 
 app.post("/extractColors", upload.single("image"), async (req, res) => {
   try {
